@@ -9,6 +9,10 @@
  * 
  */
 
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
 define('MY_APP', true);
 
 //////////// CONFIGS ////////////
@@ -160,11 +164,14 @@ if (isset($_GET["image"])) {
 		exit();
 	}
 
+	// var_dump($image);
+	// exit();
 	createThumbnail($image, $thumbnailWidth, $thumbnailHeight);
 }
 // CATEGORY PAGE
 else if (isset($_GET["category"])) {
-	$category = strtolower(trim(urldecode($_GET["category"])));
+	// $category = strtolower(trim(urldecode($_GET["category"])));
+	$category = urldecode($_GET["category"]);
 	if ($category === "") {
 		header("Location: $currentUrl");
 		exit();
@@ -178,7 +185,7 @@ else if (isset($_GET["category"])) {
 
 	$title = ucwords($category);
 
-	$allImages = listAllImages($directoryPath, $allowedExtensions);
+	$allImages = listAllImages($directoryPath . $category, $allowedExtensions);
 	if (empty($allImages)) {
 		header("Location: $currentUrl");
 		exit();
